@@ -1,5 +1,3 @@
 # My personal site
 
-nibhscripta.github.io
-
-[site](https://nibhscripta.github.io/)
+[nibhscripta.github.io](https://nibhscripta.github.io/)
