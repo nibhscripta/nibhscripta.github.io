@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Distillation</title>
+    <link rel="icon" type="image/icon" href="../../favicon.ico"/>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.css" integrity="sha384-mXD7x5S50Ko38scHSnD4egvoExgMPbrseZorkbE49evAfv9nNcbrXJ8LLNsDgh9d" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.js" integrity="sha384-j/ZricySXBnNMJy9meJCtyXTKMhIJ42heyr7oAdxTDBy/CYA9hzpMo+YTNV5C+1X" crossorigin="anonymous"></script>
+</head>
+<style>
+    .home-body p {
+        line-height: 1.6rem;
+        text-align: justify;
+        text-justify: distribute;
+    }
+    .equation {
+        margin: 0 auto;
+        font-size: 1.2rem;
+    }
+</style>
+<body>
+    <div class="home-body" style="max-width: 600px;">
+        <h1>Binary Distillation</h1>
+        <p style="color: #bbb;">21 April 2023</p>
+        <p>Readers are encouraged to review the principles of <a href="https://en.wikipedia.org/wiki/Continuous_distillation" target="about_blank">countinous distillation</a>.</p>
+        <ul>
+            <h3 id="contents">Contents</h3>
+            <li>
+                <a href="#contents">Contents</a>
+            </li>
+            <li>
+                <a href="#theory">Theory</a>
+            </li>
+            <li>
+                <a href="#the-algorithm">The algorithm</a>
+            </li>
+            <li>
+                <a href="#figures">Figures</a>
+            </li>
+        </ul>
+        <ul>
+            <h3 id="figures">Figures</h3>
+            <li>
+                <a href="#figure-1">Figure 1. Example of a McCabe-Thiele Diagram.</a>
+            </li>
+            <li>
+                <a href="#figure-2">Figure 2. McCabe-Thiele Diagram with changing feed quality.</a>
+            </li>
+            <li>
+                <a href="#figure-3">Figure 3. McCabe-Thiele Diagram with changing reflux ratio.</a>
+            </li>
+            <li>
+                <a href="#figure-4">Figure 4. McCabe-Thiele Diagram with changing Murphree tray efficiency.</a>
+            </li>
+        </ul>
+        <h3 id="theory">Theory</h3>
+        <p>A McCabe-Thiele Diagram is picture in <a href="#figure-1">Figure 1</a>. This diagram contains an operating line and an equilibrium line. The equilibrium line relates the composition of the more volatile component of a binary mixture, A, in the liquid phase to its composition in the vapor phase. The operating line represents the specification of the distillation column. The operating line is anchored at the worm, or bottoms, composition and the distillate composition. The pinch point of the operating line, at the point (x'', y''), is determined by the intersection of either the enriching or the stripping line and the feed line. Notice, the stripping line and the enriching line may not be specified for the same column.</p>
+        <div class="figure" id="figure-1">
+            <img src="mt.svg" alt="Example of a McCabe-Thiele Diagram">
+            <p><strong><i>Figure 1.</i></strong> Example of a McCabe-Thiele Diagram.</p>
+        </div>
+        <p>The feed line is represented by <a href="#equation-1">Equation 1</a>. q is the quality of the feed: superheated vapor, saturated vapor, vapor/liquid mixture, saturated liquid, or subcooled liquid. The effect of a changing q can be seen in <a href="#figure-2">Figure 2</a>.</p>
+        <div id="equation-1" class="equation"></div>
+        <div class="figure" id="figure-2">
+            <img src="q.gif" alt="McCabe-Thiele Diagram with changing feed quality">
+            <p><strong><i>Figure 2.</i></strong> McCabe-Thiele Diagram with changing feed quality.</p>
+        </div>
+        <p>The enriching line is represented by <a href="#equation-2">Equation 2</a>. Distillation columns are primarily controlled by varying the reflux ratio. The effect of a changing the reflux ratio can be seen in <a href="#figure-3">Figure 3</a>. In <a href="#figure-3">Figure 3</a>, the reflux ratio is increasing. At lower reflux ratios more stages are required. As the reflux increases, less stages are needed to achieve the specification. There exists some minimum ratio where an infinite number of stages are required.</p>
+        <div id="equation-2" class="equation"></div>
+        <div class="figure" id="figure-3">
+            <img src="r.gif" alt="McCabe-Thiele Diagram with changing reflux ratio">
+            <p><strong><i>Figure 3.</i></strong> McCabe-Thiele Diagram with changing reflux ratio.</p>
+        </div>
+        <p>The enriching line is represented by <a href="#equation-3">Equation 3</a>.</p>
+        <div id="equation-3" class="equation"></div>
+        <h3 id="the-algorithm">The Algorithm</h3>
+        <p>This <a href="">GitHub repository</a> demonstrates an algorithm for evaluating the number of stages required by a distillation column.</p>
+        <p>The first step is to come up with an equilibrium relationship. The proposed algorithm is indifferent to the format of the relationship. For the stage calculations themselves, only an array of x and y value pairs needs to be provided. Data may be directly inputted into the algorithm, a curve may be fit to the data, or the equilibrium can be evaluated with theoretical models like NRTL.</p>
+        <p>The equilibrium data is then combined with the composition specifications of the distillation column to construct a unified operating line. There are three options: specified reflux, specified boilup, or rule of thumb. Specifying the reflux ratio, an enriching line is created from the intersection of the feed line, and then a stripping line is contructed by linear interplotion. Specifying the boilup ratio, a stripping line is created from the intersection of the feed line, and then an enriching line is contructed by linear interplotion. Rule of thumb is used when neither ration is specified. In this case, the minimum reflux ratio is found, and 1.3 times the minimum reflux ratio is used for the reflux.</p>
+        <p>The stages are assessed by stepping off from the distillate composition. At each stage, two x/y pairs are found: one at equilibrium of the stage, and the other on the operating line. To evaluate stages, a for loop is run for an arbitrarily large number of stages. Starting at <i>i</i>=0 where the stage number is <i>i</i>+1, on each loop iteration, the first y value is simply the y value of the previous iteration. Because there are two y values per stage, the first y value is y[2<i>i</i>]. The first x value is on the equilibrium line. Because the equilibrium line is an array of values, x at equilibrium can be interpolated from the equilibrium line. The second x value is simply on the operating line at the first x value of the iteration. The second x value is then equal to x[2<i>i</i>+1]. Finally, the second y value falls on the operating line at x[2<i>i</i>+1] which can be interpolated from the operating line arrays. The loop exits x[2<i>i</i>+1] falls below the worm composition. Less than 100% percent stage efficiencies can be easily calculated by calculating a partial stage at x[2<i>i</i>+1] instead of taking x[2<i>i</i>+1] to be on the equilibrium line. This effect is pictured in <a href="#figure-4">Figure 4</a>.</p>
+        <div class="figure" id="figure-4">
+            <img src="e.gif" alt="McCabe-Thiele Diagram with changing Murphree tray efficiency">
+            <p><strong><i>Figure 4.</i></strong> McCabe-Thiele Diagram with changing Murphree tray efficiency.</p>
+        </div>
+        <footer>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="https://github.com/nibhscripta/nibhscripta.github.io" target="about_blank">Source code</a>
+                <a href="https://en.wikipedia.org/wiki/Easter_egg" target="about_blank" style="display: none;">Easter egg🥚</a>
+            </div>
+        </footer>
+    </div>
+</body>
+<script>
+    window.addEventListener("load", () => {
+        katex.render("y_i = \\frac{q}{q-1} x_i - \\frac{x_F}{q-1}", document.getElementById("equation-1"), {
+            throwOnError: false
+        });
+        katex.render("y_i = \\frac{R}{R+1} x_i - \\frac{x_D}{R+1}", document.getElementById("equation-2"), {
+            throwOnError: false
+        });
+        katex.render("y_i = \\left(1 + \\frac{1}{B}\\right) x_i - \\frac{x_W}{B}", document.getElementById("equation-3"), {
+            throwOnError: false
+        });
+    })
+</script>
+</html>

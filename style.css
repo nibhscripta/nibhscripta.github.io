@@ -49,6 +49,8 @@ footer {
     display: grid;
     place-items: center;
     height: 100px;
+    border-top: 1px solid #bbb;
+    margin-top: 20px;
 }
 
 footer .links {
@@ -64,4 +66,20 @@ footer .links a {
 
 footer .links a:hover {
     text-decoration: underline;
+}
+
+.figure {
+    width: 100%;
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    gap: 10px;
+}
+
+.figure img {
+    width: 80%;
+}
+
+.figure p {
+    width: fit-content;
 }
