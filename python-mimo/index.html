@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python MIMO</title>
+    <link rel="icon" type="image/icon" href="../favicon.ico"/>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="home-body" style="max-width: 600px;">
+        <!-- Post title -->
+        <h1>MIMO Systems in Python</h1>
+        <p style="color: #bbb;">22 April 2023</p>
+        <!-- post body -->
+        <p>Suppose a system with one tank that has one inlet and outlet. Assume the outlet flow is proportional to the height. The ordinary differential described by <a href="#equation-1">Equation 1</a> characterizes the dynamics of the tank.</p>
+        <div id="equation-1" class="equation"></div>
+        <p>Suppose the height is controlled with a PI controller like the one described by <a href="#equation-2">Equation 2</a>.</p>
+        <div id="equation-2" class="equation"></div>
+        <p>Rewrite the state space model to incorporate the PI controller.</p>
+        <div id="equation-3" class="equation"></div>
+        <div id="equation-4" class="equation"></div>
+        <p>Error is described by <a href="#equation-5">Equation 5</a>.</p>
+        <div id="equation-5" class="equation"></div>
+        <p>Substitute the error and factor.</p>
+        <div id="equation-6" class="equation"></div>
+        <div id="equation-7" class="equation"></div>
+        <p>Create matrices.</p>
+        <div id="equation-8" class="equation"></div>
+        <div id="equation-9" class="equation"></div>
+        <div id="equation-10" class="equation"></div>
+        <div id="equation-11" class="equation"></div>
+        <p>To simulate this sytem in python, install the <a href="https://python-control.readthedocs.io/" target="about_blank">control systems library</a>. Import ss which is just like the MATLAB ss function which creates an LTI system from A, B, C, and D matrices. Suppose everything is 1 except integral gain which is 0.5.</p>
+<!-- code snippet -->
+<code>
+<pre>
+from control import ss
+</pre>
+</code>
+        <p>Define the A, B, C, and D matrices using numpy arrays.</p>
+<!-- code snippet -->
+<code>
+<pre>
+from numpy import array
+A = array([
+    [-2, 0.5],
+    [-1, 0]
+])
+B = array([
+    [1, 1],
+    [0, 1]
+])
+c = array([1, 0])
+d = 0
+</pre>
+</code>
+        <p>Define the LTI system with ss.</p>
+<!-- code snippet -->
+<code>
+<pre>
+sys = ss(A, B, c, d)    
+</pre>
+</code>
+        <p>Simulate a step response with step_response.</p>
+<!-- code snippet -->
+<code>
+<pre>
+from control import step_response
+t, y = step_response(sys
+</pre>
+</code>
+        <p>Plot the response with matplotlib to see what it looks like.</p>
+<!-- code snippet -->
+<code>
+<pre>
+from matplotlib.pyplot import plot, legend, xlabel, ylabel
+plot(t, y[0, 0], label="h")
+plot(t, y[0, 1], label=r"$e_I$")
+xlabel("Time")
+ylabel("Response")
+legend()
+</pre>
+</code>
+        <!-- figure -->
+        <div class="figure" id="figure-1">
+            <img src="1.png" alt="MIMO system step response">
+            <p><strong><i>Figure 1.</i></strong> Step response in the tank system.</p>
+        </div>
+        <p>Note that the response in <a href="#figure-1">Figure 1</a> is a response to a step input in both the set point and disturbance. To simulate a response to just one of the inputs, use the function input_output_response from control.</p>
+<!-- code snippet -->
+<code>
+<pre>
+from control import input_output_response
+</pre>
+</code>
+        <p>Use numpy to define the time and input arrays. These follow the same convetion as lsim in MATLAB. In the following code, a step change in set point is simulated.</p>
+<!-- code snippet -->
+<code>
+<pre>
+from numpy import ones, zeros, linspace
+t = linspace(0, 20, 100)
+u_sp = array([
+    zeros(100),
+    ones(100)
+])
+</pre>
+</code>
+t, y = input_output_response(sys, t, u_sp)
+
+plot(t, y[0])
+xlabel("Time")
+ylabel("Response")
+        <p>Now simulate with input_output_response.</p>
+<!-- code snippet -->
+<code>
+<pre>
+t, y = input_output_response(sys, t, u_sp)
+
+plot(t, y[0])
+xlabel("Time")
+ylabel("Response")
+</pre>
+</code>
+        <p>Notice that because one of the inputs is zero, the response array only contains the response for the output variable. In this case, that is the height. Observe that, in <a href="#figure-2">Figure 2</a>, the height goes up by one.</p>
+        <!-- figure -->
+        <div class="figure" id="figure-2">
+            <img src="2.png" alt="MIMO sp response">
+            <p><strong><i>Figure 2.</i></strong> Change in set point of the tank system.</p>
+        </div>
+        <p>Repeat the above steps but for a disturbance change.</p>
+<!-- code snippet -->
+<code>
+<pre>
+t = linspace(0, 20, 100)
+u_disturbance = array([
+    ones(100),
+    zeros(100)
+])
+
+t, y = input_output_response(sys, t, u_disturbance)
+
+plot(t, y[0])
+xlabel("Time")
+ylabel("Response")
+</pre>
+</code>
+        <p>In <a href="#figure-3">Figure 3</a>, the height goes up but returns to zero as expected.</p>
+        <!-- figure -->
+        <div class="figure" id="figure-3">
+            <img src="3.png" alt="MIMO disturbance response">
+            <p><strong><i>Figure 3.</i></strong> Disturbance response in the tank system.</p>
+        </div>
+        <p>View the <a href="https://raw.githubusercontent.com/nibhscripta/nibhscripta.github.io/main/python-mimo/python mimo.ipynb">code</a> for this example. Read the documentation for python control. There are numerous useful functions in this library for control systems analysis. Additionally, there are implentations of <a href="https://python-control.readthedocs.io/en/0.9.3.post2/matlab.html" target="about_blank">MATLAB-like interfaces</a>.</p>
+        <!-- footer -->
+        <footer>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="https://github.com/nibhscripta/nibhscripta.github.io" target="about_blank">Source code</a>
+            </div>
+        </footer>
+    </div>
+</body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.css" integrity="sha384-mXD7x5S50Ko38scHSnD4egvoExgMPbrseZorkbE49evAfv9nNcbrXJ8LLNsDgh9d" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.js" integrity="sha384-j/ZricySXBnNMJy9meJCtyXTKMhIJ42heyr7oAdxTDBy/CYA9hzpMo+YTNV5C+1X" crossorigin="anonymous"></script>
+<script src="equations.js"></script>
+<script src="../js/render-katex-equations.js"></script>
+</html>
