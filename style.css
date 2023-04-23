@@ -83,3 +83,14 @@ footer .links a:hover {
 .figure p {
     width: fit-content;
 }
+
+.home-body p {
+    line-height: 1.6rem;
+}
+.equation {
+    margin: 0 auto;
+    font-size: 1.2rem;
+}
+.home-body a {
+    color: rgb(0, 102, 204);
+}
