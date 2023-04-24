@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python MIMO</title>
+    <link rel="icon" type="image/icon" href="../favicon.ico"/>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="home-body" style="max-width: 600px;">
+        <!-- Post title -->
+        <h1>CSS-Only Pagination</h1>
+        <p style="color: #bbb;">24 April 2023</p>
+        <!-- post body -->
+        <p>Define some pages in separate elements, in this case, div tags. Suppose they have a class called "page". Add a unique id attribute to each "page" element. Add anchor tags that link to each id. Make sure that whichever element that contains the default or home page is the last in order of all "page" elements. Here, "page-1" is the default, and so it comes after "page-2" and "page-3".</p>
+<!-- code snippet -->
+<code>
+    <button>Copy</button>
+<pre>
+<&zwj;!DOCTYPE html>
+<&zwj;body>
+    <&zwj;a href="/">/<&zwj;/a>
+    <&zwj;a href="#page-1">1<&zwj;/a>
+    <&zwj;a href="#page-2">2<&zwj;/a>
+    <&zwj;a href="#page-3">3<&zwj;/a>
+    <&zwj;div class="page" id="page-2">second page<&zwj;/div>
+    <&zwj;div class="page" id="page-3">third page<&zwj;/div>
+    <&zwj;div class="page" id="page-1">First page<&zwj;/div>
+<&zwj;/body>
+<&zwj;/html>
+</pre>
+</code>
+        <p>Apply "display: none;" to all "page" elements first to hide all pages by default.</p>
+<!-- code snippet -->
+<code>
+    <button>Copy</button>
+<pre>
+.page {
+    display: none;
+}
+</pre>
+</code>
+        <p>To display the first page by default, individually display "page-1" by selecting its id.</p>  
+<!-- code snippet -->
+<code>
+    <button>Copy</button>
+<pre>
+#page-1 {
+    display: block;
+}
+</pre>
+</code>
+        <p>Use the ":target" pseudo class to display the a page element when its id is targeted.</p>
+<!-- code snippet -->
+<code>
+    <button>Copy</button>
+<pre>
+.page:target {
+    display: block;
+}
+</pre>
+</code>
+        <p>Use the "~" to hide the first page when a different page id is targeted.</p>
+<!-- code snippet -->
+<code>
+    <button>Copy</button>
+<pre>
+.page:target ~ #page-1 {
+    display: none;
+}
+</pre>
+</code>    
+        <p>That is it. See the <a href="css-pagination.html">result</a>. Get the <a href="https://github.com/nibhscripta/nibhscripta.github.io/blob/main/css-pagination/css-pagination.html" target="about_blank">source code</a> for this example.</p>
+        <!-- footer -->
+        <footer>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="https://github.com/nibhscripta/nibhscripta.github.io" target="about_blank">Source code</a>
+            </div>
+        </footer>
+    </div>
+</body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.css" integrity="sha384-mXD7x5S50Ko38scHSnD4egvoExgMPbrseZorkbE49evAfv9nNcbrXJ8LLNsDgh9d" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.js" integrity="sha384-j/ZricySXBnNMJy9meJCtyXTKMhIJ42heyr7oAdxTDBy/CYA9hzpMo+YTNV5C+1X" crossorigin="anonymous"></script>
+<script src="equations.js"></script>
+<script src="../js/render-katex-equations.js"></script>
+<script src="../js/copy-code.js"></script>
+</html>
