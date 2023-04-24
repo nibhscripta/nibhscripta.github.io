@@ -37,6 +37,7 @@ body {
 .home-feed .description a {
     text-decoration: none;
     color: #eee;
+    width: fit-content;
 }
 
 .home-feed .description a:hover {
@@ -90,7 +91,9 @@ footer .links a:hover {
 .equation {
     margin: 0 auto;
     font-size: 1.2rem;
+    /* overflow: auto hidden; */
 }
+
 .home-body a {
     color: rgb(0, 102, 204);
 }
@@ -100,6 +103,10 @@ code {
     color: #bbb;
     padding: 10px;
     width: calc(100% - 15px);
-    overflow-x: scroll;
     position: relative;
+}
+
+code pre {
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
