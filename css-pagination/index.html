@@ -16,10 +16,10 @@
         <!-- post body -->
         <p>Define some pages in separate elements, in this case, div tags. Suppose they have a class called "page". Add a unique id attribute to each "page" element. Add anchor tags that link to each id. Make sure that whichever element that contains the default or home page is the last in order of all "page" elements. Here, "page-1" is the default, and so it comes after "page-2" and "page-3".</p>
 <!-- code snippet -->
-<code>
+<code id="html-snippet-1">
     <button>Copy</button>
 <pre>
-<&zwj;!DOCTYPE html>
+<!-- <&zwj;!DOCTYPE html>
 <&zwj;body>
     <&zwj;a href="/">/<&zwj;/a>
     <&zwj;a href="#page-1">1<&zwj;/a>
@@ -29,7 +29,7 @@
     <&zwj;div class="page" id="page-3">third page<&zwj;/div>
     <&zwj;div class="page" id="page-1">First page<&zwj;/div>
 <&zwj;/body>
-<&zwj;/html>
+<&zwj;/html> -->
 </pre>
 </code>
         <p>Apply "display: none;" to all "page" elements first to hide all pages by default.</p>
@@ -85,7 +85,7 @@
 </body>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.css" integrity="sha384-mXD7x5S50Ko38scHSnD4egvoExgMPbrseZorkbE49evAfv9nNcbrXJ8LLNsDgh9d" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.js" integrity="sha384-j/ZricySXBnNMJy9meJCtyXTKMhIJ42heyr7oAdxTDBy/CYA9hzpMo+YTNV5C+1X" crossorigin="anonymous"></script>
-<script src="equations.js"></script>
-<script src="../js/render-katex-equations.js"></script>
 <script src="../js/copy-code.js"></script>
+<script src="html-snippets.js"></script>
+<script src="../js/render-html-snippets.js"></script>
 </html>
