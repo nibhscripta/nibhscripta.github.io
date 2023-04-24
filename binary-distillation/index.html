@@ -11,41 +11,137 @@
 <body>
     <div class="home-body" style="max-width: 600px;">
         <h1>Binary Distillation</h1>
-        <p style="color: #bbb;">21 April 2023</p>
+        <p style="color: #bbb;">21 April 2023 (Updated: 24 April 2023)</p>
+        <ul>
+            <li><a href="#theory">Theory</a></li>
+            <li><a href="#algorithm">Algorithm</a></li>
+            <li><a href="#demo">Demonstration</a></li>
+        </ul>
+        <!-- Post body -->
         <p>Readers are encouraged to review the principles of <a href="https://en.wikipedia.org/wiki/Continuous_distillation" target="about_blank">countinous distillation</a>.</p>
         <h3 id="theory">Theory</h3>
-        <p>A McCabe-Thiele Diagram is picture in <a href="#figure-1">Figure 1</a>. This diagram contains an operating line and an equilibrium line. The equilibrium line relates the composition of the more volatile component of a binary mixture, A, in the liquid phase to its composition in the vapor phase. The operating line represents the specification of the distillation column. The operating line is anchored at the worm, or bottoms, composition and the distillate composition. The pinch point of the operating line, at the point (x'', y''), is determined by the intersection of either the enriching or the stripping line and the feed line. Notice, the stripping line and the enriching line may not be specified for the same column.</p>
-        <div class="figure" id="figure-1">
-            <img src="mt.png" alt="Example of a McCabe-Thiele Diagram">
-            <p><strong><i>Figure 1.</i></strong> Example of a McCabe-Thiele Diagram.</p>
-        </div>
-        <p>The feed line is represented by <a href="#equation-1">Equation 1</a>. q is the quality of the feed: superheated vapor, saturated vapor, vapor/liquid mixture, saturated liquid, or subcooled liquid. The effect of a changing q can be seen in <a href="#figure-2">Figure 2</a>.</p>
+        <p>Evaluate the feed line with <a href="#equation-1">Equation 1</a>.</p>
         <div id="equation-1" class="equation"></div>
-        <div class="figure" id="figure-2">
-            <img src="q.gif" alt="McCabe-Thiele Diagram with changing feed quality">
-            <p><strong><i>Figure 2.</i></strong> McCabe-Thiele Diagram with changing feed quality.</p>
-        </div>
-        <p>The enriching line is represented by <a href="#equation-2">Equation 2</a>. Distillation columns are primarily controlled by varying the reflux ratio. The effect of a changing the reflux ratio can be seen in <a href="#figure-3">Figure 3</a>. In <a href="#figure-3">Figure 3</a>, the reflux ratio is increasing. At lower reflux ratios more stages are required. As the reflux increases, less stages are needed to achieve the specification. There exists some minimum ratio where an infinite number of stages are required.</p>
+        <p>Specify either a reflux or boilup ratio. Evaluate the enriching line with <a href="#equation-2">Equation 2</a> in the case that reflux is specified. Evaluate the stripping line with <a href="#equation-2">Equation 3</a> in the case that boilup is specified.</p>
         <div id="equation-2" class="equation"></div>
-        <div class="figure" id="figure-3">
-            <img src="r.gif" alt="McCabe-Thiele Diagram with changing reflux ratio">
-            <p><strong><i>Figure 3.</i></strong> McCabe-Thiele Diagram with changing reflux ratio.</p>
-        </div>
-        <p>The enriching line is represented by <a href="#equation-3">Equation 3</a>.</p>
         <div id="equation-3" class="equation"></div>
-        <h3 id="the-algorithm">The Algorithm</h3>
-        <p>This <a href="https://github.com/nibhscripta/binary-distillation" target="about_blank">GitHub repository</a> demonstrates an algorithm for evaluating the number of stages required by a distillation column.</p>
-        <p>The first step is to come up with an equilibrium relationship. The proposed algorithm is indifferent to the format of the relationship. For the stage calculations themselves, only an array of x and y value pairs needs to be provided. Data may be directly inputted into the algorithm, a curve may be fit to the data, or the equilibrium can be evaluated with theoretical models like NRTL.</p>
-        <p>The equilibrium data is then combined with the composition specifications of the distillation column to construct a unified operating line. There are three options: specified reflux, specified boilup, or rule of thumb. Specifying the reflux ratio, an enriching line is created from the intersection of the feed line, and then a stripping line is contructed by linear interplotion. Specifying the boilup ratio, a stripping line is created from the intersection of the feed line, and then an enriching line is contructed by linear interplotion. Rule of thumb is used when neither ration is specified. In this case, the minimum reflux ratio is found, and 1.3 times the minimum reflux ratio is used for the reflux.</p>
-        <p>The stages are assessed by stepping off from the distillate composition. At each stage, two x/y pairs are found: one at equilibrium of the stage, and the other on the operating line. To evaluate stages, a for loop is run for an arbitrarily large number of stages. Starting at <i>i</i>=0 where the stage number is <i>i</i>+1, on each loop iteration, the first y value is simply the y value of the previous iteration. Because there are two y values per stage, the first y value is y[2<i>i</i>]. The first x value is on the equilibrium line. Because the equilibrium line is an array of values, x at equilibrium can be interpolated from the equilibrium line. The second x value is simply on the operating line at the first x value of the iteration. The second x value is then equal to x[2<i>i</i>+1]. Finally, the second y value falls on the operating line at x[2<i>i</i>+1] which can be interpolated from the operating line arrays. The loop exits x[2<i>i</i>+1] falls below the worm composition. Less than 100% percent stage efficiencies can be easily calculated by calculating a partial stage at x[2<i>i</i>+1] instead of taking x[2<i>i</i>+1] to be on the equilibrium line. This effect is pictured in <a href="#figure-4">Figure 4</a>.</p>
-        <div class="figure" id="figure-4">
-            <img src="e.gif" alt="McCabe-Thiele Diagram with changing Murphree tray efficiency">
-            <p><strong><i>Figure 4.</i></strong> McCabe-Thiele Diagram with changing Murphree tray efficiency.</p>
+        <p>Find the intersection between the feed line and one operating line. From the intersection, find the other operating line. Step off from the distillate composition down to the worm composition like what is pictured in <a href="#figure-1">Figure 1</a>.</p>
+        <!-- figure -->
+        <div class="figure" id="figure-1">
+            <img src="mt.png" alt="Example McCabe-Thiele Analysis">
+            <p><strong><i>Figure 1.</i></strong> Example McCabe-Thiele Analysis.</p>
         </div>
+        <h3 id="algorithm">Algorithm</h3>
+        <p>First, equilibrium data must be generated for a binary system. To make the algorithm flexible, the equilibrium line will be input as a pair of arrays representing liquid/vapor equilibrium compositions. If an equation describing equilibrium is provided from thermodynamic models or by fitting data, generate an equilibrium array by evaluating the function at many points. Assume that with a large number of points, the array approximates a countinous curve.</p>
+        <p>For example:</p>
+<!-- code snippet -->
+<code>
+<pre>
+def evaluate_equilibrium_line(equilibrium_relationship):
+    '''
+    ... Validation ...
+    '''
+    x = numpy.linspace(0, 1, 1000)
+
+    return VaporLiquidEquilibriumLine(x, equilibrium_relationship(x))
+</pre>
+</code>
+        <p>The operating line is constructed as a unified line which is just a pair of arrays representing the x/y values.</p>
+        <p>Below is an example of finding the intersection between the feed line and enriching line. The intersection is the point (x'', y''). Define a function for the enriching and feed lines, and find x'' for which their difference is 0 using fsolve from scipy. The value for y'' is f_enriching(x''). In the case that q=1, x'' = feed composition.</p>
+<!-- code snippet -->
+<code>
+<pre>
+f_e = lambda x: R / (R + 1) * x + x_D / (R + 1)
+
+if q == 1:
+    xpp = x_F
+else:
+    # feed line
+    f_F = lambda x: q / (q - 1) * x - x_F / (q - 1)
+
+    # x''
+    xpp = scipy.optimize.fsolve(lambda x: f_F(x) - f_e(x), x_F)[0]
+
+# y''
+ypp = f_e(xpp)
+</pre>
+</code>
+        <p>With (x'', y'') found, the enriching line is an array that goes from (x'', y'') to (x_distillate, y_distillate), and the stripping is an array that goes from (x_worm, y_worm) to (x'', y'').</p>
+        <p>If boilup is specified, follow a similar procedure, but define a function representing the stripping line first, and solve for the intersection between the feed and stripping lines.</p>
+        <p>The operating line function takes optional arguments for the boilup and reflux ratios, and uses the appropriate procedure to find the operating line by using conditionals. A special case is applied when neither ratio is supplied. In this case, the minimum reflux ratio is calculated, and a rule of thumb of 1.3 times the minimum is used for the reflux.</p>
+<code>
+<pre>
+if R is not None:
+    return operating_line
+elif B is not None:
+    return operating_line
+</pre>
+</code>
+        <p>With operating and equilibrium lines, the trays can be stepped off. Two arrays will be generated which represent the x/y points along stage steps. A loop is run, and, for each iteration, two x/y points are calculated which represent the corners of the stage.</p>
+        <p>Start from the top:</p>
+<code>
+<pre>
+# x values at each stage
+x = [operating_line.x[-1]]
+# y values at each stage
+y = [operating_line.x[-1]]
+</pre>
+</code>
+        <p>Calculate the point on the equilibrium line.</p>
+<code>
+<pre>
+for i in range(1000):
+    y.append(y[2*i])
+    x_eq = numpy.interp(y[2*i], equilibrium_line.y, equilibrium_line.x)
+</pre>
+</code>
+        <p>Account for Murphree tray efficiency.</p>
+<code>
+<pre>
+    x.append(x[2*i-1] - (x[2*i-1] - x_eq) * E)
+</pre>
+</code>
+        <p>Append point on the operating line.</p>
+<code>
+<pre>
+    x.append(x[2*i+1])
+    y.append(numpy.interp(x[2*i+1], operating_line.x, operating_line.y))
+</pre>
+</code>
+        <p>Check if the step has gone past the worm composition.</p>
+<code>
+<pre>
+    if x[2*i+1] < operating_line.x[0]:
+        break
+</pre>
+</code>
+        <p><i>i</i>+1 is the number of stages. Notice that interpolation is used to find points on the operating and equilibrium lines. For this reason, these lines are input into the algorithm as arrays instead of functions.</p>
+        <h3 id="demo">Demonstration</h3>
+        <p>An <a href="https://github.com/nibhscripta/binary-distillation" target="about_blank">implementation</a> of this algorithm as presented is available on GitHub. Combining these steps into a unified function, it is possible to observe how changing different conditions affects a binary distillation system.</p>
+        <p>Changing the reflux ratio has the biggest effect on the number of stages required. The number of stages required decreases as the reflux ratio increases as pictured in <a href="#figure-2">Figure 2</a>.</p>
+        <!-- figure -->
+        <div class="figure" id="figure-2">
+            <img src="r.gif" alt="Binary distillation with increasing reflux ratio">
+            <p><strong><i>Figure 2.</i></strong> Binary distillation with increasing reflux ratio.</p>
+        </div>
+        <p>Logically, descreasing the Murphree tray efficiency increaes the number of stages needed as demonstrated in <a href="#figure-3">Figure 3</a>.</p>
+        <!-- figure -->
+        <div class="figure" id="figure-3">
+            <img src="e.gif" alt="Binary distillation with descreasing Murphree tray efficiency">
+            <p><strong><i>Figure 3.</i></strong> Binary distillation with descreasing Murphree tray efficiency.</p>
+        </div>
+        <p>The relationship between the feed quality, q, and the number of stages required is not as straightforward as the above relationships. However, the feed quality determines the position of the feed tray. More vapor in the feed requires a lower feed stage, and more liquid demands a higher feed tray. In <a href="#figure-4">Figure 4</a>, q is increasing.</p>
+        <!-- figure -->
+        <div class="figure" id="figure-4">
+            <img src="q.gif" alt="Binary distillation with changing feed quality">
+            <p><strong><i>Figure 4.</i></strong> Binary distillation with changing feed quality.</p>
+        </div>
+        <!-- Footer -->
         <footer>
             <div class="links">
                 <a href="/">Home</a>
                 <a href="https://github.com/nibhscripta/nibhscripta.github.io" target="about_blank">Source code</a>
+                <a href="mailto:nibhscripta@tutanota.com">Contact</a>
             </div>
         </footer>
     </div>
