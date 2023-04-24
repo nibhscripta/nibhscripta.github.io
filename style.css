@@ -110,3 +110,15 @@ code pre {
     overflow-x: auto;
     scrollbar-width: thin;
 }
+
+code button {
+    background-color: #222;
+    color: #bbb;
+    outline: none;
+    border: 1px solid #444;
+    padding: 2px;
+}
+
+code button:hover {
+    background-color: #333;
+}

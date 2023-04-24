@@ -34,6 +34,7 @@
         <p>To simulate this sytem in python, install the <a href="https://python-control.readthedocs.io/" target="about_blank">control systems library</a>. Import ss which is just like the MATLAB ss function which creates an LTI system from A, B, C, and D matrices. Suppose everything is 1 except integral gain which is 0.5.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 from control import ss
 </pre>
@@ -41,6 +42,7 @@ from control import ss
         <p>Define the A, B, C, and D matrices using numpy arrays.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 from numpy import array
 A = array([
@@ -58,6 +60,7 @@ d = 0
         <p>Define the LTI system with ss.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 sys = ss(A, B, c, d)    
 </pre>
@@ -65,6 +68,7 @@ sys = ss(A, B, c, d)
         <p>Simulate a step response with step_response.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 from control import step_response
 t, y = step_response(sys
@@ -73,6 +77,7 @@ t, y = step_response(sys
         <p>Plot the response with matplotlib to see what it looks like.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 from matplotlib.pyplot import plot, legend, xlabel, ylabel
 plot(t, y[0, 0], label="h")
@@ -90,6 +95,7 @@ legend()
         <p>Note that the response in <a href="#figure-1">Figure 1</a> is a response to a step input in both the set point and disturbance. To simulate a response to just one of the inputs, use the function input_output_response from control.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 from control import input_output_response
 </pre>
@@ -97,6 +103,7 @@ from control import input_output_response
         <p>Use numpy to define the time and input arrays. These follow the same convetion as lsim in MATLAB. In the following code, a step change in set point is simulated.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 from numpy import ones, zeros, linspace
 t = linspace(0, 20, 100)
@@ -114,6 +121,7 @@ ylabel("Response")
         <p>Now simulate with input_output_response.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 t, y = input_output_response(sys, t, u_sp)
 
@@ -131,6 +139,7 @@ ylabel("Response")
         <p>Repeat the above steps but for a disturbance change.</p>
 <!-- code snippet -->
 <code>
+    <button>Copy</button>
 <pre>
 t = linspace(0, 20, 100)
 u_disturbance = array([
@@ -165,4 +174,5 @@ ylabel("Response")
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.js" integrity="sha384-j/ZricySXBnNMJy9meJCtyXTKMhIJ42heyr7oAdxTDBy/CYA9hzpMo+YTNV5C+1X" crossorigin="anonymous"></script>
 <script src="equations.js"></script>
 <script src="../js/render-katex-equations.js"></script>
+<script src="../js/copy-code.js"></script>
 </html>

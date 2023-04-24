@@ -1,7 +1,7 @@
-const codes = document.querySelectorAll("code")
+const codeSnippetBlocks = document.querySelectorAll("code")
 
-codes.forEach(element => {
-    element.children[0].addEventListener("click", () => {
-        navigator.clipboard.writeText(element.children[1].textContent)
+codeSnippetBlocks.forEach(codeSnippetELement => {
+    codeSnippetELement.children[0].addEventListener("click", () => {
+        navigator.clipboard.writeText(codeSnippetELement.children[1].textContent)
     })
 });
