@@ -77,7 +77,7 @@ footer .links a:hover {
     gap: 10px;
 }
 
-.figure img {
+.figure img, .figure video {
     width: 80%;
 }
 
