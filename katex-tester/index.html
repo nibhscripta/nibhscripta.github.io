@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katex Playground</title>
+    <link rel="icon" type="image/icon" href="../favicon.ico"/>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="home-body" style="max-width: 600px;">
+        <textarea type="text" id="equation-in" style="padding: 5px; font-size: 1.2rem; word-wrap: break-word;" cols="30" rows="2"></textarea>
+        <div id="equation-out" class="equation"></div>
+        <button id="copy-html">Copy html</button>
+        <button id="copy-latex">Copy Latex</button>
+        <!-- Footer -->
+        <footer>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="https://github.com/nibhscripta/nibhscripta.github.io" target="about_blank">Source code</a>
+                <a href="mailto:nibhscripta@tutanota.com">Contact</a>
+            </div>
+        </footer>
+    </div>
+</body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.css" integrity="sha384-mXD7x5S50Ko38scHSnD4egvoExgMPbrseZorkbE49evAfv9nNcbrXJ8LLNsDgh9d" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.6/dist/katex.min.js" integrity="sha384-j/ZricySXBnNMJy9meJCtyXTKMhIJ42heyr7oAdxTDBy/CYA9hzpMo+YTNV5C+1X" crossorigin="anonymous"></script>
+<script>
+    const inputElement = document.getElementById("equation-in")
+    const outputElement = document.getElementById("equation-out")
+    const copyHtml = document.getElementById("copy-html") 
+    const copyLatex = document.getElementById("copy-latex") 
+
+    inputElement.addEventListener("input", (e) => {
+        const equation = e.target.value
+        const eqHtml = katex.renderToString(equation, {
+        throwOnError: false
+        });
+
+        outputElement.innerHTML = eqHtml
+
+        copyHtml.addEventListener("click", () => {
+            navigator.clipboard.writeText(eqHtml)
+        })
+        copyLatex.addEventListener("click", () => {
+            navigator.clipboard.writeText(equation)
+        })
+    })
+</script>
+</html>
