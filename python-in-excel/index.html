@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python in Excel</title>
+    <link rel="icon" type="image/icon" href="../favicon.ico"/>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="home-body" style="max-width: 600px;">
+        <!-- Post title -->
+        <h1>Python in Excel</h1>
+        <p style="color: #bbb;">27 April 2023</p>
+        <!-- post body -->
+        <p>An open source way of using python in excel is <a href="https://docs.xlwings.org/en/stable/index.html">xlwings</a>. The xlwings package is available from PyPI.</p>
+<!-- code snippet -->
+<code id="html-snippet-1">
+<pre>
+pip install xlwings
+</pre>
+</code>
+       <p>Install the excel addin for xlwings.</p>
+<!-- code snippet -->
+<code id="html-snippet-1">
+<pre>
+xlwings addin install
+</pre>
+</code>   
+        <p>Some settings need to be changed in excel. Go to file, then options and click on the Trust Center tab. Then, click on Trust Center Settings. Go to the Macros Settings tab and enable "Trust access to the VBA project object model" like in <a href="#figure-1">Figure 1</a>. Enabling this settings will allow xlwings to work.</p>
+        <div class="figure" id="figure-1">
+            <img src="trust center screenshot.png" alt="trust center screenshot">
+            <p><strong><i>Figure 1.</i></strong> Screenshot of excel Trust Center Settings.</p>
+        </div>
+        <p>Create an xlwings project by using the quickstart command. This command creates an excel file that is is set up to use user-defined python functions. It will create two files: myproject.py and myproject.xlsm. Make sure that the excel file and python file are named the same.</p>
+<!-- code snippet -->
+<code id="html-snippet-1">
+<pre>
+xlwings quickstart myproject
+</pre>
+</code> 
+        <p>Open the excel file. Go to the xlwings tab and click on the "Import Functions" button. This button imports the functions from the python file into excel to be used as any other excel function. See <a href="#figure-2">Figure 2</a>.</p>
+        <div class="figure" id="figure-2">
+            <img src="xlwings tab.png" alt="xlwings tab">
+            <p><strong><i>Figure 2.</i></strong> xlwings tab in excel.</p>
+        </div>
+        <p>Open the python file in a text editor. There will be some code in there already, but feel free to get rid of it. Define a function called fit_curve which takes in as arguments x and y data and returns polynomial coefficients fit to the data and the r^2 score.</p>
+<!-- code snippet -->
+<code id="html-snippet-1">
+<pre>
+import xlwings
+from numpy import array
+from scipy.optimize import curve_fit
+from sklearn.metrics import r2_score
+
+
+# define python function as excel function
+@xlwings.func
+# define python function arguments as numpy arrays for excel conversion
+@xlwings.arg('x_data', array)
+@xlwings.arg('y_data', array)
+def fit_curve(x_data, y_data):
+    # define polynomial
+    f = lambda x, A, B, C, D: A * x**4 + B * x**3 + C * x**2 + D * x
+    # fit data
+    coeffs, _ = curve_fit(f, x_data, y_data)
+    # return coefficients and r^2
+    return (*coeffs, "r^2:", r2_score(y_data, f(x_data, *coeffs)))
+</pre>
+</code> 
+        <p>Decorators need to be added to this function to make it work in excel. The first is xlwings.func which tells xlwings that the python function should be imported into excel. The second is xlwings.arg. In this case, excel does not have the numpy array data type, and so excel arrays need to be converted to numpy arrays. Using xlwings.arg, define the python function arguments as numpy arrays.</p>
+        <p>Now define some data in excel like in <a href="#figure-3">Figure 3</a>.</p>
+        <div class="figure" id="figure-3">
+            <img src="excel data.png" alt="excel data">
+            <p><strong><i>Figure 3.</i></strong> Defining some example data in excel.</p>
+        </div>
+        <p>Press the "Import Functions" button in the xlwings tab again to import the new function. Now, the python function is available in excel like any other function. Use the fit_curve function like any other excel function. See <a href="#figure-4">Figure 4</a>.</p>
+        <div class="figure" id="figure-4">
+            <img src="using xlwings.png" alt="using xlwings user-defined function">
+            <p><strong><i>Figure 4.</i></strong> Using xlwings user-defined function.</p>
+        </div>
+        <p>See the result in <a href="#figure-5">Figure 5</a>.</p>
+        <div class="figure" id="figure-5">
+            <img src="xlwings result.png" alt="result of fit_curve user-defined function">
+            <p><strong><i>Figure 5.</i></strong> Result of fit_curve user-defined function.</p>
+        </div>
+        <p>Try out the example by downloading the <a href="">code</a>.</p>
+        <!-- footer -->
+        <footer>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="https://github.com/nibhscripta/nibhscripta.github.io">Source code</a>
+                <a href="mailto:nibhscripta@tutanota.com">Contact</a>
+            </div>
+        </footer>
+    </div>
+</body>
+<script src="../js/copy-code.js"></script>
+</html>
