@@ -33,103 +33,31 @@
         <div id="equation-11" class="equation"></div>
         <p>To simulate this sytem in python, install the <a href="https://python-control.readthedocs.io/">control systems library</a>. Import ss which is just like the MATLAB ss function which creates an LTI system from A, B, C, and D matrices. Suppose everything is 1 except integral gain which is 0.5.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-from control import ss
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L1&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Define the A, B, C, and D matrices using numpy arrays.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-from numpy import array
-A = array([
-    [-2, 0.5],
-    [-1, 0]
-])
-B = array([
-    [1, 1],
-    [0, 1]
-])
-c = array([1, 0])
-d = 0
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L3-L13&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Define the LTI system with ss.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-sys = ss(A, B, c, d)    
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L15&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Simulate a step response with step_response.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-from control import step_response
-t, y = step_response(sys
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L17-L18&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Plot the response with matplotlib to see what it looks like.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-from matplotlib.pyplot import plot, legend, xlabel, ylabel
-plot(t, y[0, 0], label="h")
-plot(t, y[0, 1], label=r"$e_I$")
-xlabel("Time")
-ylabel("Response")
-legend()
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L20-L26&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <!-- figure -->
         <div class="figure" id="figure-1">
             <img src="1.png" alt="MIMO system step response">
             <p><strong><i>Figure 1.</i></strong> Step response in the tank system.</p>
         </div>
         <p>Note that the response in <a href="#figure-1">Figure 1</a> is a response to a step input in both the set point and disturbance. To simulate a response to just one of the inputs, use the function input_output_response from control.</p>
-<!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-from control import input_output_response
-</pre>
-</code>
         <p>Use numpy to define the time and input arrays. These follow the same convetion as lsim in MATLAB. In the following code, a step change in set point is simulated.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-from numpy import ones, zeros, linspace
-t = linspace(0, 20, 100)
-u_sp = array([
-    zeros(100),
-    ones(100)
-])
-t, y = input_output_response(sys, t, u_sp)
-
-plot(t, y[0])
-xlabel("Time")
-ylabel("Response")
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L28-L35&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Now simulate with input_output_response.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-t, y = input_output_response(sys, t, u_sp)
-
-plot(t, y[0])
-xlabel("Time")
-ylabel("Response")
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L37-L42&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Notice that because one of the inputs is zero, the response array only contains the response for the output variable. In this case, that is the height. Observe that, in <a href="#figure-2">Figure 2</a>, the height goes up by one.</p>
         <!-- figure -->
         <div class="figure" id="figure-2">
@@ -138,22 +66,7 @@ ylabel("Response")
         </div>
         <p>Repeat the above steps but for a disturbance change.</p>
 <!-- code snippet -->
-<code>
-    <button>Copy</button>
-<pre>
-t = linspace(0, 20, 100)
-u_disturbance = array([
-    ones(100),
-    zeros(100)
-])
-
-t, y = input_output_response(sys, t, u_disturbance)
-
-plot(t, y[0])
-xlabel("Time")
-ylabel("Response")
-</pre>
-</code>
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-mimo%2Fpython_mimo.py%23L44-L55&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>In <a href="#figure-3">Figure 3</a>, the height goes up but returns to zero as expected.</p>
         <!-- figure -->
         <div class="figure" id="figure-3">

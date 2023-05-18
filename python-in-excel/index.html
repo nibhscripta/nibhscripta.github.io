@@ -47,28 +47,7 @@ xlwings quickstart myproject
         </div>
         <p>Open the python file in a text editor. There will be some code in there already, but feel free to get rid of it. Define a function called fit_curve which takes in as arguments x and y data and returns polynomial coefficients fit to the data and the r^2 score.</p>
 <!-- code snippet -->
-<code id="html-snippet-1">
-<pre>
-import xlwings
-from numpy import array
-from scipy.optimize import curve_fit
-from sklearn.metrics import r2_score
-
-
-# define python function as excel function
-@xlwings.func
-# define python function arguments as numpy arrays for excel conversion
-@xlwings.arg('x_data', array)
-@xlwings.arg('y_data', array)
-def fit_curve(x_data, y_data):
-    # define polynomial
-    f = lambda x, A, B, C, D: A * x**4 + B * x**3 + C * x**2 + D * x
-    # fit data
-    coeffs, _ = curve_fit(f, x_data, y_data)
-    # return coefficients and r^2
-    return (*coeffs, "r^2:", r2_score(y_data, f(x_data, *coeffs)))
-</pre>
-</code> 
+<script src="https://emgithub.com/embed-v2.js?target=https%3A%2F%2Fgithub.com%2Fnibhscripta%2Fnibhscripta.github.io%2Fblob%2Fa54cfd60616847621a623717a601ce4568b45aaf%2Fpython-in-excel%2Fpython_in_excel%2Fpython_in_excel.py%23L1-L17&style=atom-one-dark&type=code&showFullPath=on&showCopy=on"></script>
         <p>Decorators need to be added to this function to make it work in excel. The first is xlwings.func which tells xlwings that the python function should be imported into excel. The second is xlwings.arg. In this case, excel does not have the numpy array data type, and so excel arrays need to be converted to numpy arrays. Using xlwings.arg, define the python function arguments as numpy arrays.</p>
         <p>Now define some data in excel like in <a href="#figure-3">Figure 3</a>.</p>
         <div class="figure" id="figure-3">
