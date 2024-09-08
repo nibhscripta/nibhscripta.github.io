@@ -79,12 +79,6 @@ Also, change the file name.
 with writer.saving(fig, "plot.mp4", dpi):
 ```
 
-See the video in Figure 2.
-
-<video controls>
-  <source src="plot.mp4" type="video/mp4">
-</video>
-
-**Figure 2.** Animated sine wave .mp4.
+See the [video](https://github.com/nibhscripta/nibhscripta.github.io/blob/main/animate-plots/plot.mp4).
 
 View the code to create the [.gif](https://github.com/nibhscripta/nibhscripta.github.io/blob/main/animate-plots/animate%20gif.py) and the [.mp4](https://github.com/nibhscripta/nibhscripta.github.io/blob/main/animate-plots/animate%20mp4.py)
