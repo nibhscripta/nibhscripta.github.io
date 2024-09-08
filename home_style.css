@@ -1,0 +1,40 @@
+.home-body {
+    min-height: calc(100vh - 161px);
+    width: calc(100% - 40px);
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px;
+}
+
+.home-body h1 {
+    font-size: 2.5rem;
+}
+
+.home-body h2 {
+    font-size: 2rem;
+}
+
+.home-body h3 {
+    font-size: 1.5rem;
+}
+
+.home-body p, a {
+    font-size: 1.25rem;
+    line-height: 2rem;
+}
+
+.home-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.home-feed section {
+    border-top: 1px solid #bbb;
+}
+
+.home-feed .date {
+    font-style: italic;
+}
