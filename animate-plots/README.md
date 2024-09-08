@@ -85,6 +85,6 @@ See the video in Figure 2.
   <source src="plot.mp4" type="video/mp4">
 </video>
 
-Figure 2. Animated sine wave .mp4.
+**Figure 2.** Animated sine wave .mp4.
 
 View the code to create the [.gif](https://github.com/nibhscripta/nibhscripta.github.io/blob/main/animate-plots/animate%20gif.py) and the [.mp4](https://github.com/nibhscripta/nibhscripta.github.io/blob/main/animate-plots/animate%20mp4.py)
